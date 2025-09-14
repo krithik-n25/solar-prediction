@@ -1,0 +1,372 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    z-index: 1000;
+    border-bottom: 1px solid #FFD700;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #FFD700;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #FFD700;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('assets/solar-panel-sunlight.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 2rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #fab403, #f5b107); /* Darker gold colors */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(247, 178, 6, 0.5); /* Darker gold glow */
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Add this new animation for the glowing effect */
+@keyframes glowPulse {
+    0% {
+        text-shadow: 0 0 20px rgba(251, 182, 8, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(254, 184, 8, 0.7);
+    }
+    100% {
+        text-shadow: 0 0 20px rgba(250, 181, 5, 0.5);
+    }
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    color: #cccccc;
+    font-weight: 300;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #FFD700, #FFB300);
+    color: #000000;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+}
+
+/* Main Content */
+.main-content {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.input-section {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 179, 0, 0.05));
+    border-radius: 20px;
+    padding: 3rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #FFD700;
+}
+
+/* Form Styles */
+.form-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #FFD700;
+    font-size: 1rem;
+}
+
+.form-input,
+.form-select {
+    padding: 1rem;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #FFD700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.form-input::placeholder {
+    color: #888888;
+}
+
+.location-button {
+    padding: 1rem;
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 179, 0, 0.2));
+    border: 2px solid #FFD700;
+    border-radius: 10px;
+    color: #FFD700;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.location-button:hover {
+    background: linear-gradient(45deg, #FFD700, #FFB300);
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+/* Submit Section */
+.submit-container {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.submit-button {
+    padding: 1.2rem 3rem;
+    background: linear-gradient(45deg, #FFD700, #FFB300);
+    border: none;
+    border-radius: 50px;
+    color: #000000;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+    font-family: 'Poppins', sans-serif;
+}
+
+.submit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.4);
+}
+
+.submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Loading Spinner */
+.loading {
+    display: none;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.spinner {
+    border: 3px solid rgba(255, 215, 0, 0.3);
+    border-radius: 50%;
+    border-top: 3px solid #FFD700;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+/* Message Styles */
+.message {
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.error {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid #ff4444;
+    color: #ff6666;
+}
+
+.success {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #44ff44;
+    color: #66ff66;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    0% { 
+        transform: rotate(0deg); 
+    }
+    100% { 
+        transform: rotate(360deg); 
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .form-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+    
+    .input-section {
+        padding: 2rem;
+    }
+    
+    .navbar {
+        padding: 1rem;
+    }
+    
+    .main-content {
+        padding: 2rem 1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .submit-button {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .form-container {
+        gap: 1rem;
+    }
+    
+    .input-section {
+        padding: 1.5rem;
+    }
+}

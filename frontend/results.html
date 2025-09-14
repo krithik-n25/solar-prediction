@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Prediction Results - Solar Energy Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Additional styles for results page */
+        .results-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .results-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .results-subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 179, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #cccccc;
+            font-weight: 500;
+        }
+
+        .chart-section {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 179, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 1rem;
+        }
+
+        .actions-section {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .action-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin: 0 1rem;
+            background: linear-gradient(45deg, #FFD700, #FFB300);
+            color: #000000;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .action-button.secondary {
+            background: transparent;
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+
+        .action-button.secondary:hover {
+            background: linear-gradient(45deg, #FFD700, #FFB300);
+            color: #000000;
+        }
+
+        .input-summary {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-summary h3 {
+            color: #FFD700;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .input-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .input-label {
+            color: #cccccc;
+            font-weight: 500;
+        }
+
+        .input-value {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .results-title {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-button {
+                display: block;
+                margin: 0.5rem 0;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">☀️ Solar Energy Dashboard</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#predict">Predict</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Results Content -->
+    <div class="results-container">
+        <div class="results-header">
+            <h1 class="results-title">Solar Prediction Results</h1>
+            <p class="results-subtitle">Your personalized solar energy forecast and analysis</p>
+        </div>
+
+        <!-- Input Summary -->
+        <div class="input-summary">
+            <h3>📍 System Configuration</h3>
+            <div class="input-grid" id="input-summary">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Key Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-value" id="total-kwh">--</div>
+                <div class="stat-label">Total kWh Today</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value" id="daily-income">$--</div>
+                <div class="stat-label">Daily Income</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value" id="monthly-income">$--</div>
+                <div class="stat-label">Monthly Income</div>
+            </div>
+        </div>
+
+        <!-- Hourly Power Generation Chart -->
+        <div class="chart-section">
+            <h2 class="chart-title">📊 Hourly Power Generation Forecast</h2>
+            <div class="chart-container">
+                <canvas id="powerChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions-section">
+            <button onclick="window.print()" class="action-button">
+                🖨️ Print Report
+            </button>
+            <button onclick="downloadReport()" class="action-button">
+                📥 Download Data
+            </button>
+            <a href="index.html" class="action-button secondary">
+                🔄 New Prediction
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Load and display results
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultsData = JSON.parse(sessionStorage.getItem('predictionResults'));
+            
+            if (!resultsData || !resultsData.report) {
+                alert('No prediction data found. Redirecting to home page.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            displayResults(resultsData);
+        });
+
+        function displayResults(data) {
+            const { report, inputData } = data;
+
+            // Display key statistics
+            document.getElementById('total-kwh').textContent = report.total_kwh_today + ' kWh';
+            document.getElementById('daily-income').textContent = '$' + report.daily_income.toFixed(2);
+            document.getElementById('monthly-income').textContent = '$' + report.monthly_income.toFixed(2);
+
+            // Display input summary
+            displayInputSummary(inputData);
+
+            // Create power generation chart
+            createPowerChart(report.hourly_predictions);
+        }
+
+        function displayInputSummary(inputData) {
+            const summaryContainer = document.getElementById('input-summary');
+            
+            const summaryItems = [
+                { label: 'Latitude', value: inputData.latitude.toFixed(6) + '°' },
+                { label: 'Longitude', value: inputData.longitude.toFixed(6) + '°' },
+                { label: 'Panel Area', value: inputData.panel_surface_area + ' m²' },
+                { label: 'Tilt Angle', value: inputData.tilt_angle + '°' },
+                { label: 'Azimuth Angle', value: inputData.azimuth_angle + '°' },
+                { label: 'Panel Efficiency', value: inputData.panel_efficiency + '%' },
+                { label: 'Cost per kWh', value: '$' + inputData.cost_per_kwh.toFixed(3) }
+            ];
+
+            summaryContainer.innerHTML = summaryItems.map(item => `
+                <div class="input-item">
+                    <span class="input-label">${item.label}:</span>
+                    <span class="input-value">${item.value}</span>
+                </div>
+            `).join('');
+        }
+
+        function createPowerChart(hourlyData) {
+            const ctx = document.getElementById('powerChart').getContext('2d');
+            
+            const labels = hourlyData.map(item => {
+                const date = new Date(item.timestamp);
+                return date.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: false 
+                });
+            });
+            
+            const powerData = hourlyData.map(item => item.predicted_power_w);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Power Generation (W)',
+                        data: powerData,
+                        borderColor: '#FFD700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#FFD700',
+                        pointBorderColor: '#FFB300',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff',
+                                font: {
+                                    family: 'Poppins',
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#cccccc',
+                                font: {
+                                    family: 'Poppins'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 215, 0, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#cccccc',
+                                font: {
+                                    family: 'Poppins'
+                                },
+                                callback: function(value) {
+                                    return value + ' W';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 215, 0, 0.1)'
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            hoverBackgroundColor: '#FFD700'
+                        }
+                    }
+                }
+            });
+        }
+
+        function downloadReport() {
+            const resultsData = JSON.parse(sessionStorage.getItem('predictionResults'));
+            if (!resultsData) return;
+
+            const dataStr = JSON.stringify(resultsData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `solar-prediction-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

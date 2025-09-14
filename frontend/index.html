@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Prediction System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="logo">☀️ Solar Energy Dashboard</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="results.html">Predict</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="login.html">login</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Solar Prediction System</h1>
+            <p class="hero-subtitle">Harness the power of AI to predict and optimize your solar energy generation</p>
+            <a href="#predict" class="cta-button">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="input-section" id="predict">
+            <h2 class="section-title">Solar Power Prediction</h2>
+            
+            <div id="message-container"></div>
+            
+            <form id="prediction-form">
+                <div class="form-container">
+                    <!-- Location Inputs -->
+                    <div class="form-group">
+                        <label class="form-label">Latitude</label>
+                        <input type="number" id="latitude" class="form-input" step="0.000001" placeholder="e.g., 23.0225" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Longitude</label>
+                        <input type="number" id="longitude" class="form-input" step="0.000001" placeholder="e.g., 72.5714" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Use Current Location</label>
+                        <button type="button" id="location-btn" class="location-button">📍 Get My Location</button>
+                    </div>
+                    
+                    <!-- Date Range -->
+                    <div class="form-group">
+                        <label class="form-label">Prediction Duration</label>
+                        <select id="duration" class="form-select" required>
+                            <option value="24">24 Hours</option>
+                            <option value="48">48 Hours</option>
+                            <option value="72">72 Hours</option>
+                        </select>
+                    </div>  
+                    
+                    <!-- Panel Specifications -->
+                    <div class="form-group">
+                        <label class="form-label">Panel Surface Area (m²)</label>
+                        <input type="number" id="surface_area" class="form-input" step="0.01" placeholder="e.g., 20" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Tilt Angle (°)</label>
+                        <input type="number" id="tilt_angle" class="form-input" step="0.1" min="0" max="90" placeholder="e.g., 25" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Azimuth Angle (°)</label>
+                        <input type="number" id="azimuth_angle" class="form-input" step="0.1" min="0" max="360" placeholder="e.g., 180" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Panel Efficiency (%)</label>
+                        <input type="number" id="efficiency" class="form-input" step="0.1" min="1" max="100" placeholder="e.g., 20" required>
+                    </div>
+                </div>
+                
+                <div class="submit-container">
+                    <button type="submit" id="submit-btn" class="submit-button">
+                        🔮 Predict Solar Generation
+                    </button>
+                </div>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Calculating solar predictions...</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Get user location
+        document.getElementById('location-btn').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                this.textContent = '📍 Getting location...';
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        document.getElementById('latitude').value = position.coords.latitude.toFixed(6);
+                        document.getElementById('longitude').value = position.coords.longitude.toFixed(6);
+                        this.textContent = '✅ Location Found';
+                        showMessage('Location detected successfully!', 'success');
+                    },
+                    (error) => {
+                        this.textContent = '📍 Get My Location';
+                        showMessage('Unable to get location. Please enter manually.', 'error');
+                    }
+                );
+            } else {
+                showMessage('Geolocation is not supported by this browser.', 'error');
+            }
+        });
+
+        // Form submission
+        document.getElementById('prediction-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const loading = document.getElementById('loading');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            loading.style.display = 'block';
+            
+            // Collect form data - match FastAPI backend field names
+            const formData = {
+                latitude: parseFloat(document.getElementById('latitude').value),
+                longitude: parseFloat(document.getElementById('longitude').value),
+                panel_surface_area: parseFloat(document.getElementById('surface_area').value),
+                tilt_angle: parseFloat(document.getElementById('tilt_angle').value),
+                azimuth_angle: parseFloat(document.getElementById('azimuth_angle').value),
+                panel_efficiency: parseFloat(document.getElementById('efficiency').value),
+                cost_per_kwh: 0.15 // Default cost per kWh, you can add this as a form field if needed
+            };
+            
+            try {
+                // Call FastAPI backend
+                const response = await fetch('http://127.0.0.1:8000/generate_report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.detail || `Server error: ${response.status}`);
+                }
+                
+                const reportData = await response.json();
+                
+                // Store results in sessionStorage
+                sessionStorage.setItem('predictionResults', JSON.stringify({
+                    report: reportData,
+                    inputData: formData
+                }));
+                
+                // Redirect to results page
+                window.location.href = 'results.html';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Failed to get predictions. Please check your connection and try again.', 'error');
+                
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🔮 Predict Solar Generation';
+                loading.style.display = 'none';
+            }
+        });
+        
+        // Show message function
+        function showMessage(text, type) {
+            const container = document.getElementById('message-container');
+            container.innerHTML = `<div class="message ${type}">${text}</div>`;
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 3000);
+            }
+        }
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

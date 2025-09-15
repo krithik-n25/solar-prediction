@@ -4,3 +4,7 @@ scikit-learn
 pandas
 gunicorn
 pydantic
+requests
+joblib
+pvlib
+timezonefinderL

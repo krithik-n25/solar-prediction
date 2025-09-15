@@ -389,7 +389,7 @@
                     <div class="stat-label">Peak Sun Hours</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="annualSavings">₹18,640</div>
+                    <div class="stat-value" id="annualSavings">$18,686</div>
                     <div class="stat-label">Annual Savings</div>
                 </div>
             </div>
@@ -673,12 +673,12 @@
             const powerOutput = (basepower * efficiency / 100).toFixed(1);
             const dailyEnergy = (powerOutput * 6).toFixed(1);
             const sunHours = Math.max(0, (sunPosition.elevation / 90 * 8)).toFixed(1);
-            const annualSavings = Math.round(dailyEnergy * 365 * 4.5); // ₹4.5 per kWh
+            const annualSavings = Math.round(dailyEnergy * 70* 0.12); // $0.12  per kWh
             
             document.getElementById('powerOutput').textContent = powerOutput + 'kW';
             document.getElementById('dailyEnergy').textContent = dailyEnergy + 'kWh';
             document.getElementById('sunHours').textContent = sunHours + 'h';
-            document.getElementById('annualSavings').textContent = '₹' + annualSavings.toLocaleString();
+            document.getElementById('annualSavings').textContent = '$' + annualSavings.toLocaleString();
             
             // Solar irradiance calculation
             const irradiance = Math.round(1000 * Math.sin(sunPosition.elevation * Math.PI / 180));

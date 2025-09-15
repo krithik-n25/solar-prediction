@@ -8,3 +8,4 @@ requests
 joblib
 pvlib
 timezonefinderL
+lightgbm

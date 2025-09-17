@@ -33,7 +33,7 @@ class FrontendData(BaseModel):
     cost_per_kwh: float = 0.15 # Add a default cost in USD if frontend doesn't send it   
 
 # --- Step 2: Load your trained model ---
-MODEL_FILE_PATH = "models/solar_model_Ahmedabad_India.pkl"
+MODEL_FILE_PATH = "backend/models/solar_model_Ahmedabad_India.pkl"
 try:
     model = joblib.load(MODEL_FILE_PATH)
     print(f"✅ Model '{MODEL_FILE_PATH}' loaded successfully.")
@@ -147,7 +147,7 @@ def fetch_nasa_power_data(lat: float, lon: float):
     # ** THE FALLBACK LOGIC IS HERE **
     print("❌ Live API failed. Using local fallback data for demo.")
     try:
-        with open('sample_data.json', 'r') as f:
+        with open('backend/sample_data.json', 'r') as f:
             sample_records = json.load(f)
         df = pd.DataFrame(sample_records)
         df['timestamp'] = pd.to_datetime(df['timestamp'])

@@ -33,7 +33,7 @@ class FrontendData(BaseModel):
     cost_per_kwh: float = 0.15 # Add a default cost in USD if frontend doesn't send it   
 
 # --- Step 2: Load your trained model ---
-MODEL_FILE_PATH = "backend/models/solar_model_Ahmedabad_India.pkl"
+MODEL_FILE_PATH = "models/solar_model_Ahmedabad_India.pkl"
 try:
     model = joblib.load(MODEL_FILE_PATH)
     print(f"✅ Model '{MODEL_FILE_PATH}' loaded successfully.")

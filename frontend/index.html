@@ -150,7 +150,7 @@
             
             try {
                 // Call FastAPI backend
-                const response = await fetch('https://solar-prediction-api-kri.onrender.com/', {
+                const response = await fetch('https://solar-prediction-api-kri.onrender.com/generate_full_prediction', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
